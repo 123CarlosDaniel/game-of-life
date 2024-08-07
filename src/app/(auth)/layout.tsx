@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Login",
-  description: "Sign in to your account",
+  title: "Log in - Game of Life",
+  description: "Log in to see your creations of the game of life",
 };
 
 export default function AuthLayout({
