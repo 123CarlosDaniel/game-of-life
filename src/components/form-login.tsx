@@ -7,8 +7,9 @@ import { FcGoogle } from "react-icons/fc"
 
 const LoginForm = () => {
   return (
-    <div className="max-w-4xl">
-      <div className="flex items-center w-full gap-x-2">
+    <div className="min-w-52">
+      <div className="space-y-3 w-full">
+        <h3 className="text-center text-lg">Sign in</h3>
         <form
           action={async() => {
             "use server"
@@ -20,7 +21,6 @@ const LoginForm = () => {
           <Button
             className="w-full"
             size={"lg"}
-            variant={"outline"}
           >
             <FcGoogle className="h-5 w-5" />
           </Button>
@@ -36,7 +36,6 @@ const LoginForm = () => {
           <Button
             className="w-full"
             size={"lg"}
-            variant={"outline"}
           >
             <FaGithub className="h-5 w-5" />
           </Button>
