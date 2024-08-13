@@ -8,30 +8,7 @@ import {
   useState,
 } from "react"
 import { Button } from "@/components/ui/button"
-
-const useKeyPressed = () => {
-  const [keyPressed, setKeyPressed] = useState(new Set())
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      setKeyPressed((prev) => new Set(prev).add(e.key))
-    }
-
-    const handleKeyUp = (e: KeyboardEvent) => {
-      setKeyPressed((prev) => {
-        const updatedKeys = prev
-        updatedKeys.delete(e.key)
-        return updatedKeys
-      })
-    }
-    window.addEventListener("keydown", handleKeyDown)
-    window.addEventListener("keyup", handleKeyUp)
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown)
-      window.removeEventListener("keyup", handleKeyUp)
-    }
-  }, [])
-  return keyPressed
-}
+import { useKeyPressed } from "@/hooks/useKeyPressed"
 
 const GameFrame = () => {
   const WIDTH = 800
@@ -186,10 +163,7 @@ const GameFrame = () => {
   }
 
   const toggleCellState = (e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>, state: number) => {
-    let { clientX, clientY } = getMouseCoordinates(e)
-    const rect = canvasRef.current?.getBoundingClientRect()
-    clientX = clientX - rect?.left! / scale
-    clientY = clientY - rect?.top! / scale
+    const {clientX, clientY} = getClientInCanvasRectPosition(e) 
     const [r, c] = obtainCoordinates(clientX, clientY)
     if(state == grid[r][c]) return
     setGrid((prev) => {
@@ -200,11 +174,16 @@ const GameFrame = () => {
     })
   }
 
-  const handleClick: MouseEventHandler<HTMLCanvasElement> = (e) => {
+  const getClientInCanvasRectPosition = (e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>) => {
     let { clientX, clientY } = getMouseCoordinates(e)
     const rect = canvasRef.current?.getBoundingClientRect()
     clientX = clientX - rect?.left! / scale
-    clientY = clientY - rect?.top! / scale
+    clientY = clientY - rect?.top! / scale    
+    return {clientX, clientY}
+  }
+
+  const handleClick: MouseEventHandler<HTMLCanvasElement> = (e) => {
+    const {clientX, clientY} = getClientInCanvasRectPosition(e)
     const [r, c] = obtainCoordinates(clientX, clientY) 
     setGrid((prev) => {
       const newGrid = [...prev]
@@ -267,11 +246,11 @@ const GameFrame = () => {
   return (
     <div className="w-full flex gap-x-8 justify-center items-center">
       <div className="flex flex-col gap-y-4">
-        <Button onClick={handleStartStop}>{running ? "Stop" : "Start"}</Button>
-        <Button onClick={() => nextGrid(grid)} disabled={running}>
+        <Button variant={"outline"} onClick={handleStartStop}>{running ? "Stop" : "Start"}</Button>
+        <Button variant={"secondary"} onClick={() => nextGrid(grid)} disabled={running}>
           Next State
         </Button>
-        <Button onClick={clearGrid}>Clear</Button>
+        <Button variant={"destructive"} onClick={clearGrid}>Clear</Button>
       </div>
       <canvas
         ref={canvasRef}
