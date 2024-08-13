@@ -252,6 +252,7 @@ const GameFrame = () => {
         x: prev.x + deltaX,
         y: prev.y + deltaY,
       }))
+      e.currentTarget.style.cursor = "grabbing"
     }
     if(action == "toggling") {
       toggleCellState(e, toggleState)
@@ -259,6 +260,7 @@ const GameFrame = () => {
   }
 
   const mouseUpHandler: MouseEventHandler<HTMLCanvasElement> = (e) => {
+    e.currentTarget.style.cursor = "default"
     setAction("none")
   }
 
