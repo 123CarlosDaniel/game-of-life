@@ -22,7 +22,10 @@ model User {
   emailVerified DateTime?
   image         String?
 
-  accounts       Account[]
+  accounts  Account[]
+  creations Creation[]
+  comments  Comment[]
+  reactions Reaction[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -30,7 +33,7 @@ model User {
 
 model Account {
   id                       String  @id @default(cuid())
-  userId                   String   
+  userId                   String
   type                     String
   provider                 String
   providerAccountId        String
@@ -49,4 +52,42 @@ model Account {
 
   @@unique([provider, providerAccountId])
   @@index([userId])
+}
+
+model Creation {
+  id          String    @id @default(cuid())
+  ownerId     String
+  title       String
+  description String?   @db.Text
+  data        Json
+  comments    Comment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  owner User @relation(fields: [ownerId], references: [id])
+}
+
+model Comment {
+  id         String  @id @default(cuid())
+  opinion    String? @db.Text
+  ownerId    String
+  creationId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  owner    User     @relation(fields: [ownerId], references: [id])
+  creation Creation @relation(fields: [creationId], references: [id])
+}
+
+model Reaction {
+  id         String @id @default(cuid())
+  reaction   String
+  ownerId    String
+  owner      User   @relation(fields: [ownerId], references: [id])
+  creationId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
