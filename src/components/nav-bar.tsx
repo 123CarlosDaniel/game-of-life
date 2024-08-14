@@ -1,6 +1,8 @@
 "use client"
 
 import { signIn, signOut, useSession } from "next-auth/react"
+import { IoLogOutOutline } from "react-icons/io5";
+import { GoSignIn } from "react-icons/go";
 import { Button } from "./ui/button"
 import Link from "next/link"
 import { Silkscreen } from "next/font/google"
@@ -29,7 +31,7 @@ const Navbar = () => {
               signOut()
             }}
           >
-            Logout
+            Logout <IoLogOutOutline className="ml-2 h-4 w-4"/>
           </Button>
         )}
         {!data?.user && status !== "loading" && (
@@ -40,7 +42,7 @@ const Navbar = () => {
               signIn()
             }}
           >
-            Login
+            Login <GoSignIn className="ml-2 h-4 w-4"/>
           </Button>
         )}
       </div>
