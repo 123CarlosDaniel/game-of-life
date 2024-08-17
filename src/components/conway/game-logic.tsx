@@ -12,7 +12,7 @@ import { useKeyPressed } from "@/hooks/useKeyPressed"
 
 const GameFrame = () => {
   const WIDTH = 800
-  const HEIGHT = 500
+  const HEIGHT = 450
   const cellSize = 20
   const rows = 200
   const cols = 200
@@ -126,7 +126,7 @@ const GameFrame = () => {
   }, [grid, running])
 
   const onZoom = (delta: number) => {
-    setScale((prev) => Math.min(Math.max(prev + delta, 0.4), 2))
+    setScale((prev) => Math.min(Math.max(prev + delta, 0.3), 4))
   }
 
   useEffect(() => {
@@ -244,8 +244,8 @@ const GameFrame = () => {
   }
 
   return (
-    <div className="w-full flex gap-x-8 justify-center items-center">
-      <div className="flex flex-col gap-y-4">
+    <div className="w-full flex flex-col gap-y-8 justify-center items-center">
+      <div className="flex gap-x-4">
         <Button variant={"outline"} onClick={handleStartStop}>{running ? "Stop" : "Start"}</Button>
         <Button variant={"secondary"} onClick={() => nextGrid(grid)} disabled={running}>
           Next State

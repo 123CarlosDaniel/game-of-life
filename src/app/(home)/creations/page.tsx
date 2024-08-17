@@ -1,11 +1,8 @@
-"use client"
-import GameFrame from "@/components/conway/game-logic"
+import React from 'react'
 
 const CreationsPage = () => {
   return (
-    <div className="flex w-full flex-1 items-center justify-center">
-      <GameFrame />
-    </div>
+    <div>CreationsPage</div>
   )
 }
 

@@ -8,7 +8,7 @@ export const generateToken = (id?: string) => {
     },
     process.env.AUTH_SECRET!,
     {
-      expiresIn: "1h",
+      expiresIn: "1d",
       algorithm: "HS256",
     }
   )
