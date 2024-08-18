@@ -1,8 +1,8 @@
 "use client"
 
 import { signIn, signOut, useSession } from "next-auth/react"
-import { IoLogOutOutline } from "react-icons/io5";
-import { GoSignIn } from "react-icons/go";
+import { IoLogOutOutline } from "react-icons/io5"
+import { GoSignIn } from "react-icons/go"
 import { Button } from "./ui/button"
 import Link from "next/link"
 import { Silkscreen } from "next/font/google"
@@ -18,11 +18,9 @@ const Navbar = () => {
         <Link href={"/"}>Game of Life</Link>
       </h1>
       <div className="flex gap-x-8">
-        <Link href={"/creations"}>
-          <Button size="lg" variant={"ghost"}>
-            Creations
-          </Button>
-        </Link>
+        <Button size="lg" asChild variant={"ghost"}>
+          <Link href={"/creations"}>Creations</Link>
+        </Button>
         {data?.user && (
           <Button
             size="lg"
@@ -31,7 +29,7 @@ const Navbar = () => {
               signOut()
             }}
           >
-            Logout <IoLogOutOutline className="ml-2 h-4 w-4"/>
+            Logout <IoLogOutOutline className="ml-2 h-4 w-4" />
           </Button>
         )}
         {!data?.user && status !== "loading" && (
@@ -42,7 +40,7 @@ const Navbar = () => {
               signIn()
             }}
           >
-            Login <GoSignIn className="ml-2 h-4 w-4"/>
+            Login <GoSignIn className="ml-2 h-4 w-4" />
           </Button>
         )}
       </div>
