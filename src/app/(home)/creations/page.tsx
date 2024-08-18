@@ -1,4 +1,11 @@
 import Image from "next/image"
+import {
+  HeartIcon,
+  HeartFilledIcon,
+  ChatBubbleIcon,
+} from "@radix-ui/react-icons"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { Button } from "@/components/ui/button"
 
 const creations = [
   {
@@ -9,6 +16,8 @@ const creations = [
     creationDate: "2022-01-01",
     description: "Description 1",
     image: "/game.jpg",
+    comments: "10",
+    reactions: "10",
   },
   {
     id: "2",
@@ -18,6 +27,8 @@ const creations = [
     creationDate: "2022-01-01",
     description: "Description 2",
     image: "/game.jpg",
+    comments: "10",
+    reactions: "10",
   },
 ]
 
@@ -62,6 +73,14 @@ const CreationsPage = () => {
                     height={450}
                     src={creation.image}
                   />
+                </div>
+                <div className="flex justify-around w-full text-neutral-400 ">
+                  <Button variant={"ghost"}>
+                    <HeartIcon className="h-[18px] w-[18px] mr-1" /> <span className="text-sm">{creation.reactions}</span>
+                  </Button>
+                  <Button variant={"ghost"}>
+                    <ChatBubbleIcon className="h-[18px] w-[18px] mr-1" /> <span className="text-sm">{creation.comments}</span>
+                  </Button>
                 </div>
               </div>
             </div>
