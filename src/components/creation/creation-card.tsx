@@ -15,9 +15,9 @@ import {
 } from "@/components/ui/tooltip"
 import { useState } from "react"
 import { formatDistanceToNow } from "date-fns"
-import { Creation } from "@/types/creations"
+import { CreationInList } from "@/types/creations"
 
-const CreationCard = ({ creation }: { creation: Creation }) => {
+const CreationCard = ({ creation }: { creation: CreationInList }) => {
   const [isReactionActive, setIsReactionActive] = useState(
     creation.isReactionActive
   )
