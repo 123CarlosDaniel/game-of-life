@@ -1,41 +1,13 @@
-import { formatDistanceToNow } from "date-fns"
 import CreationCard from "@/components/creation/creation-card"
+import { auth } from "@/auth"
+import { GetCreationsList } from "@/services/creations"
 
-const creations = [
-  {
-    id: "1",
-    title: "Creation 1",
-    creatorName: "John Doe",
-    creatorImage: "/profile.jpg",
-    creationDate: formatDistanceToNow(new Date("2022-01-01"), {
-      addSuffix: true,
-    }),
-    description: "Description 1",
-    image: "/game.jpg",
-    comments: "10",
-    reactions: "10",
-    isReactionActive: false,
-  },
-  {
-    id: "2",
-    title: "Creation 2",
-    creatorName: "John Doe",
-    creatorImage: "/profile.jpg",
-    creationDate: formatDistanceToNow(new Date("2022-01-01"), {
-      addSuffix: true,
-    }),
-    description: "Description 2",
-    image: "/game.jpg",
-    comments: "10",
-    reactions: "10",
-    isReactionActive: true,
-  },
-]
-
-const CreationsPage = () => {
+const CreationsPage = async() => {
+  const session = await auth()
+  const {data, pages} = await GetCreationsList(session?.jwt)
   return (
     <div className="flex flex-col w-full text-sm pb-4">
-      {creations.map((creation) => (
+      {data.map((creation) => (
         <CreationCard key={creation.id} creation={creation}/>
       ))}
     </div>

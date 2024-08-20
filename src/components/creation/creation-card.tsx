@@ -14,21 +14,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { useState } from "react"
+import { formatDistanceToNow } from "date-fns"
+import { Creation } from "@/types/creations"
 
-interface CreationCardProps {
-  id: string
-  title: string
-  creatorName: string
-  creatorImage: string
-  creationDate: string
-  description: string
-  image: string
-  comments: string
-  reactions: string
-  isReactionActive: boolean
-}
-
-const CreationCard = ({ creation }: { creation: CreationCardProps }) => {
+const CreationCard = ({ creation }: { creation: Creation }) => {
   const [isReactionActive, setIsReactionActive] = useState(
     creation.isReactionActive
   )
@@ -41,8 +30,8 @@ const CreationCard = ({ creation }: { creation: CreationCardProps }) => {
       <div className="flex gap-x-2 w-full">
         <div className="h-[40px] w-[40px] rounded-full overflow-hidden relative">
           <Image
-            alt={creation.creatorName}
-            src={creation.creatorImage}
+            alt={creation.ownerName}
+            src={creation.ownerImage}
             layout="fill"
             className="rounded-full object-cover"
           />
@@ -54,9 +43,13 @@ const CreationCard = ({ creation }: { creation: CreationCardProps }) => {
                 <h1 className="font-semibold text-dark-light">
                   {creation.title}
                 </h1>
-                <span>{creation.creatorName}</span>
+                <span>{creation.ownerName}</span>
                 <span className="leading-none h-[20px] align-middle">.</span>
-                <span>{creation.creationDate}</span>
+                <span>
+                  {formatDistanceToNow(new Date(creation.createdAt), {
+                    addSuffix: true,
+                  })}
+                </span>
               </div>
               <p className="text-dark-dark">{creation.description}</p>
             </div>
@@ -65,7 +58,7 @@ const CreationCard = ({ creation }: { creation: CreationCardProps }) => {
                 alt={creation.title}
                 width={600}
                 height={450}
-                src={creation.image}
+                src={"/game.jpg"}
               />
             </div>
             <div className="flex justify-around w-full text-neutral-400 ">
