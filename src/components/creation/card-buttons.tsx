@@ -20,12 +20,15 @@ const CardButtons = ({ creation }: { creation: CreationInList }) => {
     creation.isReactionActive
   )
   return (
-    <div className="flex justify-around w-full text-neutral-400 ">
+    <div className="flex justify-around w-full text-neutral-400">
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
             variant={"ghost"}
-            onClick={() => setIsReactionActive(!isReactionActive)}
+            onClick={(e) => {
+              e.stopPropagation()
+              setIsReactionActive(!isReactionActive)
+            }}
             className={cn(
               "flex items-center",
               isReactionActive && "text-pink-600",
@@ -49,6 +52,9 @@ const CardButtons = ({ creation }: { creation: CreationInList }) => {
           <Button
             variant={"ghost"}
             className="flex items-center hover:text-blue-400"
+            onClick={(e) => {
+              e.stopPropagation()
+            }}
           >
             <ChatBubbleIcon className="h-[18px] w-[18px] mr-1" />{" "}
             <span className="text-sm">{creation.comments}</span>
