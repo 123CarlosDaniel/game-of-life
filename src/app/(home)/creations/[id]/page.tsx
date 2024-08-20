@@ -1,10 +1,9 @@
-"use client"
-import GameFrame from "@/components/conway/game-logic"
 
-const CreationPage = () => {
+const CreationPage = ({ params }: { params: { id: string }}) => {
+  console.log(params.id)
   return (
     <div className="flex w-full flex-1 items-center justify-center">
-      <GameFrame />
+      hola mundo
     </div>
   )
 }
