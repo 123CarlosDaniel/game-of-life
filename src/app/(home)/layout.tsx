@@ -14,11 +14,11 @@ export default function HomeLayout({
   return (
     <main className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="flex justify-center">
+      <div className="flex flex-1 justify-center">
         <div className="hidden md:flex flex-1 min-w-[100px] max-w-[300px]">
           <div className="w-full h-full">Ad</div>
         </div>
-        <div className="w-[800px]">{children}</div>
+        <div className="w-[800px] flex-1">{children}</div>
         <div className="hidden md:flex flex-1 min-w-[100px] max-w-[300px]">
           <div className="w-full h-full">Ad</div>
         </div>

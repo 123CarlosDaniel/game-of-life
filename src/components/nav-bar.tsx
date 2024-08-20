@@ -13,7 +13,7 @@ const Navbar = () => {
   const { data, status } = useSession()
 
   return (
-    <div className="w-full px-8 py-4 flex justify-between">
+    <div className="w-full px-8 py-4 flex justify-between sticky top-0 bg-dark/60 bg-opacity-30 backdrop-blur-md">
       <h1 className={cn("text-2xl font-bold", font.className)}>
         <Link href={"/"}>Game of Life</Link>
       </h1>
