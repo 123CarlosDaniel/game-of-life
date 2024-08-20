@@ -8,7 +8,7 @@ const CreationsPage = async() => {
   return (
     <div className="flex flex-col w-full items-center text-sm pb-4">
       {data.map((creation) => (
-        <CreationCard key={creation.id} creation={creation}/>
+        <CreationCard key={creation.id} creation={creation} canRedirect/>
       ))}
     </div>
   )
