@@ -5,5 +5,8 @@ export const endPoints = {
     all: (pageNumber: number, perPage: number, sortBy: string) => {
       return `${API_URL}/creation/all?page-number=${pageNumber}&per-page=${perPage}&sort-by=${sortBy}`
     },
+    byId: (id: string) => {
+      return `${API_URL}/creation/${id}`
+    }
   },
 }
