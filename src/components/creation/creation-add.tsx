@@ -67,9 +67,6 @@ export function CreationAddCommentForm({
                   {...field}
                 />
               </FormControl>
-              {/* <FormDescription>
-                You can <span>@mention</span> other users and organizations.
-              </FormDescription> */}
               <FormMessage className="text-red-500 font-normal"/>
             </FormItem>
           )}

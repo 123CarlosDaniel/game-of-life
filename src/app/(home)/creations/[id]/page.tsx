@@ -12,7 +12,7 @@ const CreationPage = async ({ params }: { params: { id: string } }) => {
   return (
     <div className="flex pt-4  flex-col w-fit mx-auto flex-1 border-neutral-600 border-x border-t">
       <div className="px-4">
-        <CreationCard creation={data} />
+        <CreationCard creation={data} className={{wrapper: "pb-4"}} />
         <div className="w-full flex gap-x-2 py-4">
           <Avatar
             altSrc={session ? session.user.name : "image profile"}
