@@ -1,3 +1,5 @@
+import { Comment } from "./comment"
+
 export type CreationInList = {
   id: string
   ownerId: string
@@ -23,6 +25,6 @@ export type Creation = {
   updatedAt: string
   reactions: number
   comments: number
-  commentsList: Object[]
+  commentsList: Comment[]
   isReactionActive: boolean
 }
