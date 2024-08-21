@@ -1,15 +1,16 @@
+import { cn } from "@/lib/utils";
 import Image from "next/image"
 
-const Avatar = ({ altSrc, src }: { altSrc: string; src: string }) => {
+const Avatar = ({ altSrc, src, className }: { altSrc: string; src: string, className?: string }) => {
   return (
-    <div className="h-[40px] w-[40px] rounded-full overflow-hidden relative">
-    <Image
-      alt={altSrc}
-      src={src}
-      className="rounded-full object-cover"
-      fill
-    />
-  </div>
+    <div className={cn("h-[40px] w-[40px] rounded-full overflow-hidden relative", className || "")}>
+      <Image
+        alt={altSrc}
+        src={src}
+        className="rounded-full object-cover"
+        fill
+      />
+    </div>
   )
 }
 
