@@ -17,7 +17,7 @@ function CardWrapper({
     <div
       key={creation.id}
       className={cn(
-        "max-w-[600px] mx-auto p-4 border-neutral-600 border-b first:border-t",
+        "max-w-[700px] min-w-[600px] mx-auto p-4 border-neutral-600 border-b first:border-t",
         canRedirect ? "cursor-pointer" : ""
       )}
       onClick={() => {

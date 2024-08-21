@@ -6,7 +6,7 @@ const CreationsPage = async() => {
   const session = await auth()
   const {data, pages} = await GetCreationsList(session?.jwt)
   return (
-    <div className="flex flex-col w-full items-center text-sm pb-4">
+    <div className="flex flex-col w-fit mx-auto items-center text-sm pb-4 border-neutral-600 border-x">
       {data.map((creation) => (
         <CreationCard key={creation.id} creation={creation} canRedirect/>
       ))}
