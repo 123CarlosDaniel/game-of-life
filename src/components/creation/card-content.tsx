@@ -1,6 +1,6 @@
 import Image from "next/image"
 
-import { formatDistanceToNow } from "date-fns"
+import { formatDate } from "date-fns"
 import CardButtons from "./card-buttons"
 import { CreationInList } from "@/types/creations"
 import Avatar from "../common/avatar"
@@ -10,18 +10,16 @@ const CardContent = ({ creation }: { creation: CreationInList }) => {
     <div className="flex gap-x-2 w-full">
       <Avatar altSrc={creation.ownerName} src={creation.ownerImage} />
       <div className="flex-1">
-        <div className="space-y-2">
+        <div className="space-y-4">
           <div className="space-y-1">
             <div className="flex gap-x-2 items-center text-neutral-400">
               <h1 className="font-semibold text-dark-light">
                 {creation.title}
               </h1>
               <span>{creation.ownerName}</span>
-              <span className="leading-none h-[20px] align-middle">.</span>
+              <span>·</span>
               <span>
-                {formatDistanceToNow(new Date(creation.createdAt), {
-                  addSuffix: true,
-                })}
+                {formatDate(new Date(creation.createdAt), "hh:mm a · MMMM dd, yyyy")}
               </span>
             </div>
             <p className="text-dark-dark">{creation.description}</p>

@@ -7,17 +7,20 @@ function CardWrapper({
   children,
   creation,
   canRedirect,
+  className,
 }: {
   children: React.ReactNode
   creation: CreationInList
   canRedirect?: boolean
+  className?: string
 }) {
   const router = useRouter()
   return (
     <div
       key={creation.id}
       className={cn(
-        "max-w-[700px] min-w-[600px] mx-auto p-4 border-neutral-600 border-b first:border-t",
+        "max-w-[700px] min-w-[600px] mx-auto border-neutral-600 border-b",
+        className ? className : "",
         canRedirect ? "cursor-pointer" : ""
       )}
       onClick={() => {

@@ -5,12 +5,16 @@ import CardContent from "./card-content"
 const CreationCard = ({
   creation,
   canRedirect,
+  className,
 }: {
   creation: CreationInList
   canRedirect?: boolean
+  className?: {
+    wrapper?: string
+  }
 }) => {
   return (
-    <CardWrapper creation={creation} canRedirect={canRedirect}>
+    <CardWrapper creation={creation} className={className?.wrapper} canRedirect={canRedirect}>
       <CardContent creation={creation} />
     </CardWrapper>
   )
