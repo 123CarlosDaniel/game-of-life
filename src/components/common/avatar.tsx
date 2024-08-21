@@ -9,6 +9,7 @@ const Avatar = ({ altSrc, src, className }: { altSrc: string; src: string, class
         src={src}
         className="rounded-full object-cover"
         fill
+        sizes="40px"
       />
     </div>
   )
