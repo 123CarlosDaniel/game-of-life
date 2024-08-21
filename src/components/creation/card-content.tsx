@@ -3,18 +3,12 @@ import Image from "next/image"
 import { formatDistanceToNow } from "date-fns"
 import CardButtons from "./card-buttons"
 import { CreationInList } from "@/types/creations"
+import Avatar from "../common/avatar"
 
 const CardContent = ({ creation }: { creation: CreationInList }) => {
   return (
     <div className="flex gap-x-2 w-full">
-      <div className="h-[40px] w-[40px] rounded-full overflow-hidden relative">
-        <Image
-          alt={creation.ownerName}
-          src={creation.ownerImage}
-          className="rounded-full object-cover"
-          fill
-        />
-      </div>
+      <Avatar altSrc={creation.ownerName} src={creation.ownerImage} />
       <div className="flex-1">
         <div className="space-y-2">
           <div className="space-y-1">
