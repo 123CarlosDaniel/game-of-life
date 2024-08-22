@@ -5,6 +5,7 @@ import { endPoints } from "./endpoints"
 import { GetListResponse } from "@/types/GetList"
 import { createFetchError, createNotFoundError } from "@/lib/errors"
 import { notFound, redirect } from "next/navigation"
+import { CustomResponse } from "@/types/custom-error"
 
 export async function GetCreationsList(
   jwt: string | undefined,
@@ -30,11 +31,10 @@ export async function GetCreationsList(
     const result: GetListResponse<CreationInList> = await response.json()
     return result
   } catch (error: unknown) {
-    const customError = error as CustomError
-    if (customError.name === "FetchError") {
-      redirect("/error")
+    return {
+      data: [],
+      pages: 0,
     }
-    throw customError
   }
 }
 
@@ -51,21 +51,18 @@ export async function GetCreationById(jwt: string | undefined, id: string) {
       },
     })
     if (response.status === 404) {
-      throw createNotFoundError("Creation not found")
+      throw createNotFoundError()
     }
     if (!response.ok) {
-      throw createFetchError(response.statusText, response.status)
+      throw createFetchError(response.status)
     }
     const result: Creation = await response.json()
     return result
   } catch (error: unknown) {
-    const customError = error as CustomError
-    if (customError.name === "NotFoundError") {
+    const customError = error as CustomResponse
+    if (customError.status === 404) {
       notFound()
     }
-    if (customError.name === "FetchError") {
-      redirect("/error")
-    }
-    throw error
+    redirect("/error")
   }
 }
