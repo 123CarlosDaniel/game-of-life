@@ -1,21 +1,19 @@
-export function createNotFoundError(message: string): CustomError {
+import { CustomResponse } from "@/types/custom-error";
+
+export function createNotFoundError(): CustomResponse {
   return {
-    name: "NotFoundError",
-    message: message,
+    status: 404,
   }
 }
 
-export function createUnauthorizedError(message: string): CustomError {
+export function createUnauthorizedError(): CustomResponse {
   return {
-    name: "UnauthorizedError",
-    message: message,
+    status: 401,
   }
 }
 
-export function createFetchError(message: string, status: number): CustomError {
+export function createFetchError(status: number): CustomResponse {
   return {
-    name: "FetchError",
-    message,
     status,
   };
 }

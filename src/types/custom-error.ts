@@ -1,5 +1,4 @@
-type CustomError = {
-  name: string
-  message: string
+export type CustomResponse = {
   status?: number
+  body?: any
 }
