@@ -4,15 +4,23 @@ import CardComment from "@/components/creation/card-comment"
 import { CreationAddCommentForm } from "@/components/creation/creation-comment-form"
 import CreationCard from "@/components/creation/creation-card"
 import { GetCreationById } from "@/services/creations"
+import { ArrowLeftIcon } from "@radix-ui/react-icons"
+import Link from "next/link"
 
 const CreationPage = async ({ params }: { params: { id: string } }) => {
   const session = await auth()
   const data = await GetCreationById(session?.jwt, params.id)
 
   return (
-    <div className="flex pt-4  flex-col w-fit mx-auto flex-1 border-neutral-600 border-x border-t">
+    <div className="flex  flex-col w-fit mx-auto flex-1 border-neutral-600 border-x">
+      <div className="flex gap-x-8 p-4 items-center sticky top-16 z-20 bg-dark/60 bg-opacity-30 backdrop-blur-md">
+        <Link href="/creations">
+          <ArrowLeftIcon className="h-6 w-6" />
+        </Link>
+        <span className="text-xl font-bold">Creations</span>
+      </div>
       <div className="px-4">
-        <CreationCard creation={data} className={{wrapper: "pb-4"}} />
+        <CreationCard creation={data} className={{ wrapper: "pb-4" }} />
         <div className="w-full flex gap-x-2 py-4">
           <Avatar
             altSrc={session ? session.user.name : "image profile"}
