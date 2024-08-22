@@ -13,7 +13,7 @@ const CreationPage = async ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="flex  flex-col w-fit mx-auto flex-1 border-neutral-600 border-x">
-      <div className="flex gap-x-8 p-4 items-center sticky top-16 z-20 bg-dark/60 bg-opacity-30 backdrop-blur-md">
+      <div className="flex gap-x-8 p-4 items-center sticky z-30 top-0">
         <Link href="/creations">
           <ArrowLeftIcon className="h-6 w-6" />
         </Link>

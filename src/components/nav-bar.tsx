@@ -13,14 +13,14 @@ const Navbar = () => {
   const { data, status } = useSession()
 
   return (
-    <div className="w-full px-8 py-4 flex justify-between sticky z-[100] top-0 bg-dark/60 bg-opacity-30 backdrop-blur-md">
+    <div className="w-full px-8 py-4 flex justify-between sticky z-[20] top-0 bg-dark/60 bg-opacity-30 backdrop-blur-md">
       <h1 className={cn("text-2xl font-bold", font.className)}>
         <Link href={"/"}>Game of Life</Link>
       </h1>
       <div className="flex gap-x-8">
-        <Button size="lg" asChild variant={"ghost"}>
+        {/* <Button size="lg" asChild variant={"ghost"}>
           <Link href={"/creations"}>Creations</Link>
-        </Button>
+        </Button> */}
         {data?.user && (
           <Button
             size="lg"

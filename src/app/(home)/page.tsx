@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -5,6 +7,9 @@ export default function Home() {
       <h1>
         Hello, Next.js!
       </h1>
+      <Button asChild size={"lg"} variant={"ghost"}>
+        <Link href="/creations">Creations</Link>
+      </Button>
     </main>
   );
 }
