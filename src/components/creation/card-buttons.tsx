@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/tooltip"
 import { useState } from "react"
 import { CreationInList } from "@/types/creations"
+import CommentAddDialog from "@/components/comment/comment-add-dialog"
 
-import AddCommentDialog from "../add-comment-dialog"
 
 const CardButtons = ({ creation }: { creation: CreationInList }) => {
   const [isReactionActive, setIsReactionActive] = useState(
@@ -45,7 +45,7 @@ const CardButtons = ({ creation }: { creation: CreationInList }) => {
           <p>Like</p>
         </TooltipContent>
       </Tooltip>
-      <AddCommentDialog creation={creation} />
+      <CommentAddDialog creation={creation} />
     </div>
   )
 }

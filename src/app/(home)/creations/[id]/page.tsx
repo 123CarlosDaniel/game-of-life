@@ -1,7 +1,7 @@
 import { auth } from "@/auth"
 import Avatar from "@/components/common/avatar"
 import CardComment from "@/components/creation/card-comment"
-import { CreationAddCommentForm } from "@/components/creation/creation-add"
+import { CreationAddCommentForm } from "@/components/creation/creation-comment-form"
 import CreationCard from "@/components/creation/creation-card"
 import { GetCreationById } from "@/services/creations"
 
