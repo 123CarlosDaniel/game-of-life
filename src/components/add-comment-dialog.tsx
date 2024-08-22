@@ -4,6 +4,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -23,40 +24,60 @@ import { toast } from "@/components/ui/use-toast"
 import { Button } from "./ui/button"
 import { ChatBubbleIcon } from "@radix-ui/react-icons"
 import { CreationInList } from "@/types/creations"
-import { useRef } from "react"
-
-const FormSchema = z.object({
-  comment: z
-    .string()
-    .min(1, {
-      message: "Comment must not be empty.",
-    })
-    .max(200, {
-      message: "Comment must not be longer than 200 characters.",
-    }),
-})
+import { useCallback, useRef, useTransition } from "react"
+import { debounce } from "@/lib/utils"
+import { CommentForm, CommentFormSchema } from "@/types/comment"
+import { PostComment } from "@/services/comments"
+import { useSession } from "next-auth/react"
 
 const AddCommentDialog = ({ creation }: { creation: CreationInList }) => {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const session = useSession()
+  const [isPending, startTransition] = useTransition()
+  const form = useForm<CommentForm>({
+    resolver: zodResolver(CommentFormSchema),
     defaultValues: {
-      comment: "",
-    }
+      opinion: "",
+    },
   })
 
   const refClose = useRef<HTMLButtonElement>(null)
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
+  function onSubmit(data: CommentForm) {
+    startTransition(async() => {
+        const response = await PostComment(creation.id, data, session.data?.jwt)
+        if(response.status === 404) {
+          toast({
+            title: "Creation not found",
+            description: "The creation you are trying to comment on does not exist.",
+          })
+          return
+        }
+        else if(response.status === 401) {
+          toast({
+            title: "Unauthorized",
+            description: "You are not authorized to comment on this creation.",
+          })
+          return
+        }
+        else if(!response.body) {
+          toast({
+            title: "Error",
+            description: "An error occurred while trying to comment on the creation.",
+          })
+          return
+        }
+      toast({
+        title: "Added successfully",
+        description: "Your comment has been added.",
+      })
+      form.reset()
+      await new Promise(res => {
+        setTimeout(() => {
+          refClose.current?.click()
+          res(null)
+        }, 500)
+      })
     })
-    form.reset()
-    refClose.current?.click()
   }
 
   return (
@@ -81,6 +102,9 @@ const AddCommentDialog = ({ creation }: { creation: CreationInList }) => {
           <DialogTitle className="text-sm font-normal">
             Reply to <span className="text-gray-400">{creation.ownerName}</span>
           </DialogTitle>
+          <DialogDescription>
+            Write a comment about this creation.
+          </DialogDescription>
         </DialogHeader>
         <div className="flex items-center flex-col gap-y-2">
           <Form {...form}>
@@ -90,7 +114,7 @@ const AddCommentDialog = ({ creation }: { creation: CreationInList }) => {
             >
               <FormField
                 control={form.control}
-                name="comment"
+                name="opinion"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
@@ -116,7 +140,7 @@ const AddCommentDialog = ({ creation }: { creation: CreationInList }) => {
                     Close
                   </Button>
                 </DialogClose>
-                <Button type="submit" variant={"default"}>
+                <Button type="submit" variant={"default"} disabled={isPending}>
                   Submit
                 </Button>
               </div>
