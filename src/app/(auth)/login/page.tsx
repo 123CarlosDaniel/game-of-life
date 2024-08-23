@@ -4,7 +4,6 @@ import { redirect } from "next/navigation"
 
 const LoginPage = async() => {
   const session = await getSession()
-  console.log(session)
   const user = session?.user
   if(user){
     return redirect("/")

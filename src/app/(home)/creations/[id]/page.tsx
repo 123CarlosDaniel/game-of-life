@@ -1,4 +1,3 @@
-import { auth } from "@/auth"
 import Avatar from "@/components/common/avatar"
 import CardComment from "@/components/creation/card-comment"
 import { CreationAddCommentForm } from "@/components/creation/creation-comment-form"
@@ -6,9 +5,10 @@ import CreationCard from "@/components/creation/creation-card"
 import { GetCreationById } from "@/services/creations"
 import { ArrowLeftIcon } from "@radix-ui/react-icons"
 import Link from "next/link"
+import getSession from "@/lib/getSession"
 
 const CreationPage = async ({ params }: { params: { id: string } }) => {
-  const session = await auth()
+  const session = await getSession()
   const data = await GetCreationById(session?.jwt, params.id)
 
   return (
