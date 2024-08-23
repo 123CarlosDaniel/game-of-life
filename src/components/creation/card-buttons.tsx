@@ -26,8 +26,6 @@ const CardButtons = ({
   const [isReactionActive, setIsReactionActive] = useState(
     creation.isReactionActive
   )
-  // % TODO obtain number of reactions from api
-  // % TODO obtain number of comments from api
   const debounceHandleClick = useCallback(
     debounce(
       async (active: boolean, jwt: string | undefined) => {
@@ -47,6 +45,7 @@ const CardButtons = ({
         toast({
           title: `Status - ${response.status === 200 ? "Success" : "Error"}`,
           description: `${response.message}`,
+          duration: 2000,
         })
       },
       500
@@ -63,6 +62,10 @@ const CardButtons = ({
             onClick={(e) => {
               e.stopPropagation()
               setIsReactionActive(!isReactionActive)
+              setCreation((prev) => ({
+                ...prev,
+                reactions: prev.reactions + (!isReactionActive ? 1 : -1),
+              }))
               debounceHandleClick(!isReactionActive, session.data?.jwt)
             }}
             className={cn(
