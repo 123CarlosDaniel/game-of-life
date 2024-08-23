@@ -48,6 +48,7 @@ export async function GetCreationById(jwt: string | undefined, id: string) {
         : {},
       next: {
         revalidate: 10,
+        tags: ["creations_by_id"],
       },
     })
     if (response.status === 404) {

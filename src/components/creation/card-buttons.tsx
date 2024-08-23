@@ -8,15 +8,52 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { CreationInList } from "@/types/creations"
 import CommentAddDialog from "@/components/comment/comment-add-dialog"
+import { debounce } from "@/lib/utils"
+import { addReaction, deleteReaction } from "@/services/reactions"
+import { useSession } from "next-auth/react"
+import { toast } from "../ui/use-toast"
 
-
-const CardButtons = ({ creation }: { creation: CreationInList }) => {
+const CardButtons = ({
+  creation: creationData,
+}: {
+  creation: CreationInList
+}) => {
+  const session = useSession()
+  const [creation, setCreation] = useState(creationData)
   const [isReactionActive, setIsReactionActive] = useState(
     creation.isReactionActive
   )
+  // % TODO obtain number of reactions from api
+  // % TODO obtain number of comments from api
+  const debounceHandleClick = useCallback(
+    debounce(
+      async (active: boolean, jwt: string | undefined) => {
+        if(jwt === undefined) {
+          return
+        }
+        let response
+        if(active) {
+          response = await addReaction(jwt, creation.id)
+        }
+        else {
+          response = await deleteReaction(jwt, creation.id)
+        }  
+        if(response.status === 409) {
+          return
+        }
+        toast({
+          title: `Status - ${response.status === 200 ? "Success" : "Error"}`,
+          description: `${response.message}`,
+        })
+      },
+      500
+    ),
+    []
+  )
+
   return (
     <div className="flex justify-around w-full text-neutral-400">
       <Tooltip>
@@ -26,6 +63,7 @@ const CardButtons = ({ creation }: { creation: CreationInList }) => {
             onClick={(e) => {
               e.stopPropagation()
               setIsReactionActive(!isReactionActive)
+              debounceHandleClick(!isReactionActive, session.data?.jwt)
             }}
             className={cn(
               "flex items-center",
