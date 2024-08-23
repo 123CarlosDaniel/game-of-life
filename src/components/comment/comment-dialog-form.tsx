@@ -11,11 +11,10 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "@/components/ui/use-toast"
-import { debounce } from "@/lib/utils"
 import { CommentForm, CommentFormSchema } from "@/types/comment"
 import { PostComment } from "@/services/comments"
 import { useSession } from "next-auth/react"
-import { useCallback, useRef, useTransition } from "react"
+import { useRef, useTransition } from "react"
 import { Button } from "../ui/button"
 import { DialogClose } from "../ui/dialog"
 
@@ -33,27 +32,14 @@ const CommentDialogForm = ({ creationId }: { creationId: string }) => {
   function onSubmit(data: CommentForm) {
     startTransition(async () => {
       const response = await PostComment(creationId, data, session.data?.jwt)
-      if (response.status === 404) {
+      if (response.error === true) {
         toast({
-          title: "Creation not found",
+          title: `An error has occurred - ${response.status}`,
           description:
             "The creation you are trying to comment on does not exist.",
         })
         return
-      } else if (response.status === 401) {
-        toast({
-          title: "Unauthorized",
-          description: "You are not authorized to comment on this creation.",
-        })
-        return
-      } else if (!response.body) {
-        toast({
-          title: "Error",
-          description:
-            "An error occurred while trying to comment on the creation.",
-        })
-        return
-      }
+      } 
       toast({
         title: "Added successfully",
         description: "Your comment has been added.",

@@ -7,7 +7,7 @@ import {
   createUnauthorizedError,
 } from "@/lib/errors"
 import { CommentForm } from "@/types/comment"
-import { CustomResponse } from "@/types/custom-error"
+import { CustomResponse } from "@/types/custom-response"
 
 export async function PostComment(
   creationId: string,
@@ -33,6 +33,7 @@ export async function PostComment(
       throw createFetchError(response.status)
     }
     return {
+      error: false,
       status: response.status,
       body: await response.json(),
     } as CustomResponse

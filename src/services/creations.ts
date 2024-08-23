@@ -5,7 +5,7 @@ import { endPoints } from "./endpoints"
 import { GetListResponse } from "@/types/GetList"
 import { createFetchError, createNotFoundError } from "@/lib/errors"
 import { notFound, redirect } from "next/navigation"
-import { CustomResponse } from "@/types/custom-error"
+import { CustomResponse } from "@/types/custom-response"
 
 export async function GetCreationsList(
   jwt: string | undefined,
