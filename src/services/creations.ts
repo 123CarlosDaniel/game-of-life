@@ -19,7 +19,7 @@ export async function GetCreationsList(
       {
         next: {
           tags: ["creations_list"],
-          revalidate: 10,
+          revalidate: 300,
         },
         headers: jwt
           ? {
@@ -47,8 +47,8 @@ export async function GetCreationById(jwt: string | undefined, id: string) {
           }
         : {},
       next: {
-        revalidate: 10,
-        tags: ["creations_by_id"],
+        revalidate: 300,
+        tags: [`creations_by_id_${id}`],
       },
     })
     if (response.status === 404) {

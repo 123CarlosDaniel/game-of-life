@@ -22,7 +22,8 @@ export async function addReaction(jwt: string | undefined, creationId: string) {
     if(!response.ok) {
       throw createFetchError(response.status)
     }
-    revalidateTag("creations_by_id")
+    revalidateTag(`creations_by_id_${creationId}`)
+    revalidateTag("creations_list")
     return {
       status: response.status,
       message: "Reaction added",
@@ -52,7 +53,8 @@ export async function deleteReaction(jwt: string | undefined, creationId: string
     if(!response.ok) {
       throw createFetchError(response.status)
     }
-    revalidateTag("creations_by_id")
+    revalidateTag(`creations_by_id_${creationId}`)
+    revalidateTag("creations_list")
     return {
       status: response.status,
       message: "Reaction deleted",
