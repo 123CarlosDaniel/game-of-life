@@ -17,15 +17,15 @@ import { useSession } from "next-auth/react"
 import { toast } from "../ui/use-toast"
 
 const CardButtons = ({
-  creation: creationData,
+  creation,
 }: {
   creation: CreationInList
 }) => {
   const session = useSession()
-  const [creation, setCreation] = useState(creationData)
   const [isReactionActive, setIsReactionActive] = useState(
     creation.isReactionActive
   )
+  const [reactions, setReactions] = useState(creation.reactions)
   const debounceHandleClick = useCallback(
     debounce(
       async (active: boolean, jwt: string | undefined) => {
@@ -61,11 +61,17 @@ const CardButtons = ({
             variant={"ghost"}
             onClick={(e) => {
               e.stopPropagation()
+              if(session.status !== "authenticated") {
+                toast({
+                  title: "Error",
+                  description: "Please sign in to the app",
+                  variant: "destructive",
+                  duration: 2000,
+                })
+                return
+              }
               setIsReactionActive(!isReactionActive)
-              setCreation((prev) => ({
-                ...prev,
-                reactions: prev.reactions + (!isReactionActive ? 1 : -1),
-              }))
+              setReactions((prev) => prev + (isReactionActive ? -1 : 1))
               debounceHandleClick(!isReactionActive, session.data?.jwt)
             }}
             className={cn(
@@ -79,7 +85,7 @@ const CardButtons = ({
             ) : (
               <HeartIcon className="h-[18px] w-[22px] mr-1" />
             )}
-            <span className="text-sm">{creation.reactions}</span>
+            <span className="text-sm">{reactions}</span>
           </Button>
         </TooltipTrigger>
         <TooltipContent className="bg-slate-700 opacity-90 text-slate-100">
