@@ -31,6 +31,16 @@ const CommentDialogForm = ({ creationId }: { creationId: string }) => {
 
   function onSubmit(data: CommentForm) {
     startTransition(async () => {
+      if(session.status !== "authenticated") {
+        toast({
+          title: "Error",
+          description: "You must be logged in to comment",
+          variant: "destructive",
+          duration: 2000,
+        })
+        refClose.current?.click()
+        return
+      }
       const response = await PostComment(creationId, data, session.data?.jwt)
       if (response.error === true) {
         toast({
