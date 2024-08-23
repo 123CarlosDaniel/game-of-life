@@ -1,4 +1,5 @@
 export type CustomResponse = {
-  status?: number
+  error: boolean
+  status: number
   body?: any
 }
