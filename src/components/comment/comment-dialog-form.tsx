@@ -35,8 +35,7 @@ const CommentDialogForm = ({ creationId }: { creationId: string }) => {
       if (response.error === true) {
         toast({
           title: `An error has occurred - ${response.status}`,
-          description:
-            "The creation you are trying to comment on does not exist.",
+          description: response.message,
         })
         return
       } 
