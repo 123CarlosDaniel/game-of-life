@@ -13,5 +13,13 @@ export const endPoints = {
     create: (creationId: string) => {
       return `${API_URL}/comment?creation_id=${creationId}`
     }
+  },
+  reactions: {
+    create: (creationId: string) => {
+      return `${API_URL}/reaction?creation_id=${creationId}`
+    },
+    delete: (creationId: string) => {
+      return `${API_URL}/reaction?creation_id=${creationId}`
+    }
   }
 }
