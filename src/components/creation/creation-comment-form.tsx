@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,32 +15,55 @@ import {
 } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
-
-const FormSchema = z.object({
-  comment: z.string().min(1, {
-    message: "Comment must not be empty.",
-  }).max(200, {
-    message: "Comment must not be longer than 200 characters.",
-  }),
-})
+import { useTransition } from "react"
+import { useSession } from "next-auth/react"
+import { PostComment } from "@/services/comments"
+import { CommentFormSchema } from "@/types/comment"
+import { useRouter } from "next/navigation"
 
 export function CreationAddCommentForm({
   creationOwner,
+  creationId
 }: {
-  creationOwner: string
+  creationOwner: string,
+  creationId: string
 }) {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof CommentFormSchema>>({
+    resolver: zodResolver(CommentFormSchema),
   })
+  const session = useSession()
+  const [isPending, startTransition] = useTransition()
+  const router = useRouter()
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
+  function onSubmit(data: z.infer<typeof CommentFormSchema>) {
+    startTransition(async () => {
+      if(session.status !== "authenticated") {
+        toast({
+          title: "Error",
+          description: "You must be logged in to comment",
+          variant: "destructive",
+          duration: 2000,
+        })
+        return
+      }
+      const response = await PostComment(creationId, data, session.data?.jwt)
+      if (response.error === true) {
+        toast({
+          title: `An error has occurred - ${response.status}`,
+          description: response.message,
+          duration: 2000,
+        })
+        return
+      } 
+      toast({
+        title: "Added successfully",
+        description: "Your comment has been added.",
+        duration: 2000,
+      })
+      form.reset({
+        opinion: "",
+      })
+      router.refresh()
     })
   }
 
@@ -53,7 +75,7 @@ export function CreationAddCommentForm({
       >
         <FormField
           control={form.control}
-          name="comment"
+          name="opinion"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="flex items-center mb-4 text-dark-light">
@@ -71,7 +93,7 @@ export function CreationAddCommentForm({
             </FormItem>
           )}
         />
-        <Button type="submit" className="ml-auto" variant={"outline"}>
+        <Button type="submit" className="ml-auto" variant={"outline"} disabled={isPending}>
           Submit
         </Button>
       </form>

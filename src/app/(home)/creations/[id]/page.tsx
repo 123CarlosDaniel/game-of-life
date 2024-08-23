@@ -27,7 +27,10 @@ const CreationPage = async ({ params }: { params: { id: string } }) => {
             src={session ? session.user.image : "/profile.jpg"}
             className="mt-8"
           />
-          <CreationAddCommentForm creationOwner={data.ownerName} />
+          <CreationAddCommentForm
+            creationOwner={data.ownerName}
+            creationId={data.id}
+          />
         </div>
       </div>
       <div>

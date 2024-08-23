@@ -8,6 +8,7 @@ import {
 } from "@/lib/errors"
 import { CommentForm } from "@/types/comment"
 import { CustomResponse } from "@/types/custom-response"
+import { revalidateTag } from "next/cache"
 
 export async function PostComment(
   creationId: string,
@@ -32,6 +33,7 @@ export async function PostComment(
     if (!response.ok) {
       throw createFetchError(response.status)
     }
+    revalidateTag(`creation_by_id_${creationId}`)
     return {
       error: false,
       status: response.status,
