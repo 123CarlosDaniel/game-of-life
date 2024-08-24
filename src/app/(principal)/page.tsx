@@ -8,7 +8,7 @@ export default function Home() {
         Hello, Next.js!
       </h1>
       <Button asChild size={"lg"} variant={"ghost"}>
-        <Link href="/creations">Creations</Link>
+        <Link href="/home">Home</Link>
       </Button>
     </main>
   );

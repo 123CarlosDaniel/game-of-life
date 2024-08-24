@@ -25,7 +25,7 @@ function CardWrapper({
       )}
       onClick={() => {
         if (canRedirect) {
-          router.push(`/creations/${creation.id}`)
+          router.push(`/home/${creation.id}`)
         }
       }}
     >
