@@ -7,13 +7,13 @@ import Avatar from "../common/avatar"
 
 const CardElement = ({ creation }: { creation: CreationInList }) => {
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full space-y-4 text-[15px]">
       <div className="flex gap-x-2 w-full">
         <Avatar altSrc={creation.ownerName} src={creation.ownerImage} />
         <div className="space-y-4 flex-1">
           <div className="space-y-1">
             <div className="flex gap-x-2 items-center text-neutral-400">
-              <h1 className="font-semibold text-dark-light">
+              <h1 className="font-semibold text-dark-light tracking-wide">
                 {creation.title}
               </h1>
               <span>{creation.ownerName}</span>
@@ -21,7 +21,7 @@ const CardElement = ({ creation }: { creation: CreationInList }) => {
               <span>
                 {formatDate(
                   new Date(creation.createdAt),
-                  "hh:mm a · MMMM dd, yyyy"
+                  "MMM dd, yyyy"
                 )}
               </span>
             </div>

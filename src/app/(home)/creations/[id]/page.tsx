@@ -17,7 +17,7 @@ const CreationPage = async ({ params }: { params: { id: string } }) => {
         <Link href="/creations">
           <ArrowLeftIcon className="h-6 w-6" />
         </Link>
-        <span className="text-xl font-bold">Creations</span>
+        <span className="text-xl font-semibold tracking-wide">Creations</span>
       </div>
       <div className="px-4">
         <CreationCard creation={data} className={{ wrapper: "pb-4" }} />
