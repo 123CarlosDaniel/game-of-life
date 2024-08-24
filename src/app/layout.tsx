@@ -1,11 +1,15 @@
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Roboto } from "next/font/google"
 import "./globals.css"
 import { SessionProvider } from "next-auth/react"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { Toaster } from "@/components/ui/toaster"
 
-const inter = Inter({ subsets: ["latin"] })
+const roboto = Roboto({
+  subsets: ["latin"],
+  style: "normal",
+  weight: ["400", "500", "300", "700"],
+})
 
 export const metadata: Metadata = {
   title: "Game of Life",
@@ -19,10 +23,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={inter.className}>
+      <body className={roboto.className}>
         <SessionProvider>
           <TooltipProvider>{children}</TooltipProvider>
-          <Toaster/>
+          <Toaster />
         </SessionProvider>
       </body>
     </html>
