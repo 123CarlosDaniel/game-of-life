@@ -18,9 +18,6 @@ const Navbar = () => {
         <Link href={"/"}>Game of Life</Link>
       </h1>
       <div className="flex gap-x-8">
-        {/* <Button size="lg" asChild variant={"ghost"}>
-          <Link href={"/creations"}>Creations</Link>
-        </Button> */}
         {data?.user && (
           <Button
             size="lg"
