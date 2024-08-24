@@ -1,6 +1,7 @@
 import { CreationInList } from "@/types/creations"
 import CardWrapper from "./card-wrapper"
-import CardContent from "./card-content"
+import CardElement from "./card-element"
+import CardById from "./card-by-id"
 
 const CreationCard = ({
   creation,
@@ -14,8 +15,16 @@ const CreationCard = ({
   }
 }) => {
   return (
-    <CardWrapper creation={creation} className={className?.wrapper} canRedirect={canRedirect}>
-      <CardContent creation={creation} />
+    <CardWrapper
+      creation={creation}
+      className={className?.wrapper}
+      canRedirect={canRedirect}
+    >
+      {canRedirect ? (
+        <CardElement creation={creation} />
+      ) : (
+        <CardById creation={creation} />
+      )}
     </CardWrapper>
   )
 }

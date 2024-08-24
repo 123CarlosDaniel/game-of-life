@@ -5,12 +5,12 @@ import CardButtons from "./card-buttons"
 import { CreationInList } from "@/types/creations"
 import Avatar from "../common/avatar"
 
-const CardContent = ({ creation }: { creation: CreationInList }) => {
+const CardElement = ({ creation }: { creation: CreationInList }) => {
   return (
-    <div className="flex gap-x-2 w-full">
-      <Avatar altSrc={creation.ownerName} src={creation.ownerImage} />
-      <div className="flex-1">
-        <div className="space-y-4">
+    <div className="w-full space-y-4">
+      <div className="flex gap-x-2 w-full">
+        <Avatar altSrc={creation.ownerName} src={creation.ownerImage} />
+        <div className="space-y-4 flex-1">
           <div className="space-y-1">
             <div className="flex gap-x-2 items-center text-neutral-400">
               <h1 className="font-semibold text-dark-light">
@@ -19,7 +19,10 @@ const CardContent = ({ creation }: { creation: CreationInList }) => {
               <span>{creation.ownerName}</span>
               <span>·</span>
               <span>
-                {formatDate(new Date(creation.createdAt), "hh:mm a · MMMM dd, yyyy")}
+                {formatDate(
+                  new Date(creation.createdAt),
+                  "hh:mm a · MMMM dd, yyyy"
+                )}
               </span>
             </div>
             <p className="text-dark-dark">{creation.description}</p>
@@ -32,11 +35,11 @@ const CardContent = ({ creation }: { creation: CreationInList }) => {
               src={"/game.jpg"}
             />
           </div>
-          <CardButtons creation={creation} />
         </div>
       </div>
+      <CardButtons creation={creation} />
     </div>
   )
 }
 
-export default CardContent
+export default CardElement
