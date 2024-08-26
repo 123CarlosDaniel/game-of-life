@@ -89,7 +89,7 @@ const GameOfLifeLogic = () => {
   useEffect(() => {
     if (running) {
       intervalRef.current = setInterval(() => {
-        nextGrid(grid)
+        nextState()
       }, 100)
     }
     return () => {
