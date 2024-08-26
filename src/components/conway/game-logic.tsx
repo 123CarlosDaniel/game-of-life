@@ -29,12 +29,12 @@ const GameFrame = () => {
   const [panOffset, setPanOffset] = useState({ x: offsetX, y: offsetY })
   const [scale, setScale] = useState(1)
   const [scaleOffset, setScaleOffset] = useState({ x: 0, y: 0 })
-  const [toggleState, setToggleState] = useState(0)
+  const [toggleState, setToggleState] = useState(false)
 
   const keyPressed = useKeyPressed()
 
-  const [grid, setGrid] = useState<number[][]>(
-    Array.from({ length: rows }, () => Array(cols).fill(0))
+  const [grid, setGrid] = useState<boolean[][]>(
+    Array.from({ length: rows }, () => Array(cols).fill(false))
   )
   const [running, setRunning] = useState(false)
 
@@ -42,9 +42,9 @@ const GameFrame = () => {
     const canvas = canvasRef.current
     const ctx = canvas?.getContext("2d")
     if (!canvas || !ctx) return
-    canvas.addEventListener('contextmenu', (event) => {
-      event.preventDefault();
-    });
+    canvas.addEventListener("contextmenu", (event) => {
+      event.preventDefault()
+    })
     setContext(ctx)
     clearInterval(intervalRef.current)
   }, [])
@@ -70,7 +70,7 @@ const GameFrame = () => {
       for (let c = 0; c < cols; c++) {
         const x = c * cellSize
         const y = r * cellSize
-        if (grid[r][c] == 1) {
+        if (grid[r][c]) {
           context.fillStyle = "#fffbf3"
           context.fillRect(x, y, cellSize, cellSize)
         }
@@ -88,10 +88,10 @@ const GameFrame = () => {
         const row = r + i
         const col = c + j
         if (row < 0 || row >= rows || col < 0 || col >= cols) continue
-        if (grid[row][col] == 1) counterAlive++
+        if (grid[row][col]) counterAlive++
       }
     }
-    const state = grid[r][c] == 0 ? false : true
+    const state = grid[r][c]
     // supervivencia
     if (state && (counterAlive == 2 || counterAlive == 3)) return true
     // muerte soledad
@@ -103,12 +103,12 @@ const GameFrame = () => {
     return false
   }
 
-  const nextGrid = (grid: number[][]) => {
+  const nextGrid = (grid: boolean[][]) => {
     const newGrid = Array.from(grid, (row) => Array.from(row))
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
         const result = finalState(r, c)
-        newGrid[r][c] = result ? 1 : 0
+        newGrid[r][c] = result
       }
     }
     setGrid(newGrid)
@@ -162,10 +162,13 @@ const GameFrame = () => {
     return [r, c]
   }
 
-  const toggleCellState = (e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>, state: number) => {
-    const {clientX, clientY} = getClientInCanvasRectPosition(e) 
+  const toggleCellState = (
+    e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>,
+    state: boolean
+  ) => {
+    const { clientX, clientY } = getClientInCanvasRectPosition(e)
     const [r, c] = obtainCoordinates(clientX, clientY)
-    if(state == grid[r][c]) return
+    if (state == grid[r][c]) return
     setGrid((prev) => {
       const newGrid = [...prev]
       newGrid[r] = [...newGrid[r]]
@@ -174,21 +177,23 @@ const GameFrame = () => {
     })
   }
 
-  const getClientInCanvasRectPosition = (e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>) => {
+  const getClientInCanvasRectPosition = (
+    e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>
+  ) => {
     let { clientX, clientY } = getMouseCoordinates(e)
     const rect = canvasRef.current?.getBoundingClientRect()
     clientX = clientX - rect?.left! / scale
-    clientY = clientY - rect?.top! / scale    
-    return {clientX, clientY}
+    clientY = clientY - rect?.top! / scale
+    return { clientX, clientY }
   }
 
   const handleClick: MouseEventHandler<HTMLCanvasElement> = (e) => {
-    const {clientX, clientY} = getClientInCanvasRectPosition(e)
-    const [r, c] = obtainCoordinates(clientX, clientY) 
+    const { clientX, clientY } = getClientInCanvasRectPosition(e)
+    const [r, c] = obtainCoordinates(clientX, clientY)
     setGrid((prev) => {
       const newGrid = [...prev]
       newGrid[r] = [...newGrid[r]]
-      newGrid[r][c] = grid[r][c] == 0 ? 1 : 0
+      newGrid[r][c] = !grid[r][c]
       return newGrid
     })
   }
@@ -211,14 +216,12 @@ const GameFrame = () => {
       setAction("panning")
       setStartMousePosition({ x: clientX, y: clientY })
       return
-    }
-    else if (e.button == 0) {
+    } else if (e.button == 0) {
       setAction("toggling")
-      setToggleState(1)
-    } 
-    else if (e.button == 2) {
+      setToggleState(true)
+    } else if (e.button == 2) {
       setAction("toggling")
-      setToggleState(0)
+      setToggleState(false)
     }
   }
 
@@ -233,7 +236,7 @@ const GameFrame = () => {
       }))
       e.currentTarget.style.cursor = "grabbing"
     }
-    if(action == "toggling") {
+    if (action == "toggling") {
       toggleCellState(e, toggleState)
     }
   }
@@ -245,12 +248,32 @@ const GameFrame = () => {
 
   return (
     <div className="w-full flex flex-col gap-y-8 justify-center items-center">
-      <div className="flex gap-x-4">
-        <Button variant={"outline"} onClick={handleStartStop}>{running ? "Stop" : "Start"}</Button>
-        <Button variant={"secondary"} onClick={() => nextGrid(grid)} disabled={running}>
-          Next State
-        </Button>
-        <Button variant={"destructive"} onClick={clearGrid}>Clear</Button>
+      <div className="flex w-full justify-between">
+        <div className="flex gap-x-4">
+          <Button variant={"outline"} onClick={handleStartStop}>
+            {running ? "Stop" : "Start"}
+          </Button>
+          <Button
+            variant={"secondary"}
+            onClick={() => nextGrid(grid)}
+            disabled={running}
+          >
+            Next State
+          </Button>
+          <Button variant={"destructive"} onClick={clearGrid}>
+            Clear
+          </Button>
+        </div>
+        <div className="flex gap-x-4">
+          <Button
+            variant={"outline"}
+            onClick={() => {
+              console.log({ grid })
+            }}
+          >
+            Save
+          </Button>
+        </div>
       </div>
       <canvas
         ref={canvasRef}
