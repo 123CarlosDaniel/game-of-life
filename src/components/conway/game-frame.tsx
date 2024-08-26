@@ -5,10 +5,13 @@ import { SaveCreationData } from "@/services/creations"
 import { HEIGHT, WIDTH } from "@/lib/constants"
 import GameOfLifeLogic from "@/logic/game-of-life"
 import { useSession } from "next-auth/react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { toast } from "../ui/use-toast"
 
-const GameFrame = ({ id, ownerId }: { id: string; ownerId: string }) => {
+const GameFrame = ({ id, ownerId, url }: { id: string; ownerId: string, url: string }) => {
+  const session = useSession()
+  const [initialState, setInitialState] = useState<boolean[][] | null>(null)
+
   const {
     canvasRef,
     nextState,
@@ -20,8 +23,26 @@ const GameFrame = ({ id, ownerId }: { id: string; ownerId: string }) => {
     mouseMoveHandler,
     mouseUpHandler,
     grid,
-  } = GameOfLifeLogic()
-  const session = useSession()
+  } = GameOfLifeLogic(initialState)
+
+  useEffect(() => {
+    ;(async () => {
+      console.log(url)
+      const response = await fetch(url)
+      if (!response.ok) {
+        toast({
+          title: "Creation not found",
+          description: "Please try again",
+          variant: "destructive",
+        })
+      }
+      const data = await response.json()
+      const matrix = JSON.parse(data.data) as number[][]
+      const newGrid = matrix.map((row) => row.map((value) => value === 1))
+      setInitialState(newGrid)
+    })()
+  }, [])
+
   return (
     <div className="w-full flex flex-col gap-y-8 justify-center items-center">
       <div className="flex w-full justify-between">

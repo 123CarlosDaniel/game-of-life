@@ -5,7 +5,7 @@ import { HEIGHT, WIDTH, cellSize, cols, offsetX, offsetY, rows } from "@/lib/con
 import { useKeyPressed } from "@/hooks/useKeyPressed"
 import { nextGrid, obtainCoordinates } from "./utils"
 
-const GameOfLifeLogic = () => {
+const GameOfLifeLogic = (initialState: boolean[][] | null) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const intervalRef = useRef<NodeJS.Timeout>()
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null)
@@ -15,7 +15,7 @@ const GameOfLifeLogic = () => {
   const keyPressed = useKeyPressed()
 
   const [grid, setGrid] = useState<boolean[][]>(
-    Array.from({ length: rows }, () => Array(cols).fill(false))
+    initialState || Array.from({ length: rows }, () => Array(cols).fill(false))
   )
   const [running, setRunning] = useState(false)
   const [action, setAction] = useState<"none" | "panning" | "toggling">("none")
@@ -24,6 +24,11 @@ const GameOfLifeLogic = () => {
     y: 0,
   })
   const [toggleState, setToggleState] = useState(false)
+
+  useEffect(()=>{
+    if(!initialState) return
+    setGrid(initialState)
+  }, [initialState])
 
   useEffect(() => {
     if (!context) return
