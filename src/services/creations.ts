@@ -3,7 +3,7 @@
 import { Creation, CreationInList } from "@/types/creations"
 import { endPoints } from "./endpoints"
 import { GetListResponse } from "@/types/GetList"
-import { createFetchError, createNotFoundError } from "@/lib/errors"
+import { createFetchError, createNotFoundError, createUnauthorizedError } from "@/lib/errors"
 import { notFound, redirect } from "next/navigation"
 import { CustomResponse } from "@/types/custom-response"
 
@@ -41,11 +41,9 @@ export async function GetCreationsList(
 export async function GetCreationById(jwt: string | undefined, id: string) {
   try {
     const response = await fetch(endPoints.creations.byId(id), {
-      headers: jwt
-        ? {
-            Authorization: `Bearer ${jwt}`,
-          }
-        : {},
+      headers: {
+        Authorization: jwt ? `Bearer ${jwt}` : "",
+      },
       next: {
         revalidate: 300,
         tags: [`creations_by_id_${id}`],
@@ -65,5 +63,39 @@ export async function GetCreationById(jwt: string | undefined, id: string) {
       notFound()
     }
     redirect("/error")
+  }
+}
+
+export async function SaveCreationData(
+  jwt: string | undefined,
+  id: string,
+  data: string
+) {
+  try {
+    const response = await fetch(endPoints.creations.saveData(id), {
+      headers: {
+        Authorization: jwt ? `Bearer ${jwt}` : "",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({data}),
+      method: "POST",
+    })
+    if (response.status === 404) {
+      throw createNotFoundError()
+    }
+    if (response.status === 401) {
+      throw createUnauthorizedError()
+    }
+    if (!response.ok) {
+      throw createFetchError(response.status)
+    }
+    return {
+      error: false,
+      status: response.status,
+      body: await response.json(),
+    } as CustomResponse
+  } catch (error: unknown) {
+    const customError = error as CustomResponse
+    return customError
   }
 }

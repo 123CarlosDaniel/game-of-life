@@ -7,6 +7,12 @@ export const endPoints = {
     },
     byId: (id: string) => {
       return `${API_URL}/creation/${id}`
+    },
+    saveData: (id: string) => {
+      return `${API_URL}/creation/${id}/save_data`
+    },
+    getData: (id: string) => {
+      return `${API_URL}/creation/${id}/get_data`
     }
   },
   comments: {

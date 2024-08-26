@@ -206,7 +206,8 @@ const GameOfLifeLogic = () => {
     handleClick,
     mouseDownHandler,
     mouseMoveHandler,
-    mouseUpHandler
+    mouseUpHandler,
+    grid
   }
 }
 

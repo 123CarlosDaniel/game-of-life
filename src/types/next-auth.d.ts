@@ -6,4 +6,7 @@ declare module "next-auth" {
     user: User & DefaultSession["user"]
     jwt?: string
   }
+  interface User {
+    id: string
+  }
 }
