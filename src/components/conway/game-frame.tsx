@@ -8,9 +8,16 @@ import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import { toast } from "../ui/use-toast"
 
-const GameFrame = ({ id, ownerId, url }: { id: string; ownerId: string, url: string }) => {
+const GameFrame = ({
+  id,
+  ownerId,
+  url,
+}: {
+  id: string
+  ownerId: string
+  url: string
+}) => {
   const session = useSession()
-  const [initialState, setInitialState] = useState<boolean[][] | null>(null)
 
   const {
     canvasRef,
@@ -23,7 +30,10 @@ const GameFrame = ({ id, ownerId, url }: { id: string; ownerId: string, url: str
     mouseMoveHandler,
     mouseUpHandler,
     grid,
-  } = GameOfLifeLogic(initialState)
+    setInitialState,
+    saveState,
+    useSavedState,
+  } = GameOfLifeLogic()
 
   useEffect(() => {
     ;(async () => {
@@ -47,21 +57,52 @@ const GameFrame = ({ id, ownerId, url }: { id: string; ownerId: string, url: str
     <div className="w-full flex flex-col gap-y-8 justify-center items-center">
       <div className="flex w-full justify-between">
         <div className="flex gap-x-4">
-          <Button variant={"outline"} onClick={handleStartStop}>
+          <Button
+            variant={"info"}
+            className="font-normal text-base"
+            onClick={handleStartStop}
+          >
             {running ? "Stop" : "Start"}
           </Button>
-          <Button variant={"secondary"} onClick={nextState} disabled={running}>
+          <Button
+            variant={"purple"}
+            className="font-normal text-base"
+            onClick={nextState}
+            disabled={running}
+          >
             Next State
           </Button>
-          <Button variant={"destructive"} onClick={clearGrid}>
-            Clear
+          <Button
+            variant={"success"}
+            className="font-normal text-base"
+            onClick={()=>{
+              saveState()
+              toast({
+                title: "State saved",
+                description: "The state has been saved",
+                variant: "success",
+                duration: 1000,
+              })
+            }}
+            disabled={running}
+          >
+            Set Initial State
+          </Button>
+          <Button
+            variant={"teal"}
+            className="font-normal text-base"
+            onClick={useSavedState}
+            disabled={running}
+          >
+            Initial State
           </Button>
         </div>
-        {session.status === "authenticated" &&
-          session.data.user.id == ownerId && (
-            <div className="flex gap-x-4">
+        <div className="flex gap-x-4">
+          {session.status === "authenticated" &&
+            session.data.user.id == ownerId && (
               <Button
-                variant={"outline"}
+                variant={"successOutline"}
+                className="text-base"
                 onClick={async () => {
                   const matrix = grid.map((row) =>
                     row.map((value) => (value ? 1 : 0))
@@ -82,14 +123,22 @@ const GameFrame = ({ id, ownerId, url }: { id: string; ownerId: string, url: str
                   toast({
                     title: "Saved successfully",
                     description: "Your creation has been saved.",
+                    variant: "info",
                     duration: 2000,
                   })
                 }}
               >
                 Save
               </Button>
-            </div>
-          )}
+            )}
+             <Button
+            variant={"warningOutline"}
+            className="text-base"
+            onClick={clearGrid}
+          >
+            Clear
+          </Button>
+        </div>
       </div>
       <canvas
         ref={canvasRef}

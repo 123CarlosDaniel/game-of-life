@@ -20,6 +20,16 @@ const buttonVariants = cva(
           "bg-indigo-500 text-indigo-foreground shadow-sm hover:bg-indigo-600",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        warning: "bg-yellow-500 text-yellow-800 shadow-sm hover:bg-yellow-600",
+        warningOutline: "border border-yellow-500 text-yellow-500 hover:bg-yellow-100",
+        success: "bg-green-500 text-green-100 shadow-sm hover:bg-green-600",
+        successOutline: "border border-green-500 text-green-500 hover:bg-green-100",
+        info: "bg-blue-500 text-white shadow-sm hover:bg-blue-600", // Azul
+        infoOutline: "border border-blue-500 text-blue-500 hover:bg-blue-100",
+        dark: "bg-gray-800 text-white shadow-sm hover:bg-gray-900", // Oscuro
+        light: "bg-gray-100 text-gray-800 shadow-sm hover:bg-gray-200", // Claro
+        teal: "bg-teal-500 text-white shadow-sm hover:bg-teal-600", // Teal
+        purple: "bg-purple-500 text-white shadow-sm hover:bg-purple-600", // Púrpura
       },
       size: {
         default: "h-9 px-4 py-2",

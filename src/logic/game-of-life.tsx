@@ -5,7 +5,7 @@ import { HEIGHT, WIDTH, cellSize, cols, offsetX, offsetY, rows } from "@/lib/con
 import { useKeyPressed } from "@/hooks/useKeyPressed"
 import { nextGrid, obtainCoordinates } from "./utils"
 
-const GameOfLifeLogic = (initialState: boolean[][] | null) => {
+const GameOfLifeLogic = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const intervalRef = useRef<NodeJS.Timeout>()
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null)
@@ -13,7 +13,8 @@ const GameOfLifeLogic = (initialState: boolean[][] | null) => {
   const [scaleOffset, setScaleOffset] = useState({ x: 0, y: 0 })
   const [panOffset, setPanOffset] = useState({ x: offsetX, y: offsetY })
   const keyPressed = useKeyPressed()
-
+  const [initialState, setInitialState] = useState<boolean[][] | null>(null)
+  const [temporalState, setTemporalState] = useState<boolean[][] | null>(null)
   const [grid, setGrid] = useState<boolean[][]>(
     initialState || Array.from({ length: rows }, () => Array(cols).fill(false))
   )
@@ -28,6 +29,7 @@ const GameOfLifeLogic = (initialState: boolean[][] | null) => {
   useEffect(()=>{
     if(!initialState) return
     setGrid(initialState)
+    setTemporalState(initialState)
   }, [initialState])
 
   useEffect(() => {
@@ -201,7 +203,16 @@ const GameOfLifeLogic = (initialState: boolean[][] | null) => {
     const next = nextGrid(grid)
     setGrid(next)
   }
-  
+
+  const saveState = () => {
+    setTemporalState(grid)
+  }
+
+  const useSavedState = () => {
+    if (!temporalState) return
+    setGrid(temporalState)
+  }
+
   return {
     canvasRef,
     running,
@@ -212,7 +223,10 @@ const GameOfLifeLogic = (initialState: boolean[][] | null) => {
     mouseDownHandler,
     mouseMoveHandler,
     mouseUpHandler,
-    grid
+    grid,
+    setInitialState,
+    saveState,
+    useSavedState
   }
 }
 
