@@ -10,7 +10,7 @@ import getSession from "@/lib/getSession"
 const CreationPage = async ({ params }: { params: { id: string } }) => {
   const session = await getSession()
   const data = await GetCreationById(session?.jwt, params.id)
-
+  
   return (
     <div className="flex  flex-col w-fit mx-auto flex-1 border-neutral-600 border-x">
       <div className="flex gap-x-8 p-4 items-center sticky z-30 top-0">
@@ -23,8 +23,8 @@ const CreationPage = async ({ params }: { params: { id: string } }) => {
         <CreationCard creation={data} className={{ wrapper: "pb-4" }} />
         <div className="w-full flex gap-x-2 py-4">
           <Avatar
-            altSrc={session ? session.user.name : "image profile"}
-            src={session ? session.user.image : "/profile.jpg"}
+            altSrc={session?.user.name || "image profile"}
+            src={session?.user.image || "/profile.jpg"}
             className="mt-8"
           />
           <CreationAddCommentForm
