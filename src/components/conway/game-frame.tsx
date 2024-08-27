@@ -49,7 +49,6 @@ const GameFrame = ({
 
   useEffect(() => {
     ;(async () => {
-      console.log(url)
       const response = await fetch(url)
       if (!response.ok) {
         toast({
@@ -59,6 +58,7 @@ const GameFrame = ({
         })
       }
       const data = await response.json()
+      if(data.data === "[]") return
       const matrix = JSON.parse(data.data) as number[][]
       const newGrid = matrix.map((row) => row.map((value) => value === 1))
       setInitialState(newGrid)
