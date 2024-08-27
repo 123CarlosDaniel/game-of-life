@@ -12,7 +12,7 @@ const CreationPage = async ({ params }: { params: { id: string } }) => {
   const data = await GetCreationById(session?.jwt, params.id)
   
   return (
-    <div className="flex  flex-col w-fit mx-auto flex-1 border-neutral-600 border-x">
+    <div className="flex flex-col w-fit mx-auto flex-1 border-neutral-600 border-x">
       <div className="flex gap-x-8 p-4 items-center sticky z-30 top-0">
         <Link href="/home">
           <ArrowLeftIcon className="h-6 w-6" />
