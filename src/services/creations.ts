@@ -1,11 +1,12 @@
 "use server"
 
-import { Creation, CreationInList } from "@/types/creations"
+import { Creation, CreationForm, CreationInList } from "@/types/creations"
 import { endPoints } from "./endpoints"
 import { GetListResponse } from "@/types/GetList"
 import { createFetchError, createNotFoundError, createUnauthorizedError } from "@/lib/errors"
 import { notFound, redirect } from "next/navigation"
 import { CustomResponse } from "@/types/custom-response"
+import { revalidateTag } from "next/cache"
 
 export async function GetCreationsList(
   jwt: string | undefined,
@@ -89,6 +90,40 @@ export async function SaveCreationData(
     if (!response.ok) {
       throw createFetchError(response.status)
     }
+    return {
+      error: false,
+      status: response.status,
+      body: await response.json(),
+    } as CustomResponse
+  } catch (error: unknown) {
+    const customError = error as CustomResponse
+    return customError
+  }
+}
+
+export async function PostCreation(
+  jwt: string | undefined,
+  data: CreationForm
+) {
+  try {
+    const response = await fetch(endPoints.creations.post(), {
+      headers: {
+        Authorization: jwt ? `Bearer ${jwt}` : "",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+      method: "POST",
+    })
+    if (response.status === 404) {
+      throw createNotFoundError()
+    }
+    if (response.status === 401) {
+      throw createUnauthorizedError()
+    }
+    if (!response.ok) {
+      throw createFetchError(response.status)
+    }
+    revalidateTag("creations_list")
     return {
       error: false,
       status: response.status,

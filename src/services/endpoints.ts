@@ -13,6 +13,9 @@ export const endPoints = {
     },
     getData: (id: string) => {
       return `${API_URL}/creation/${id}/get_data`
+    },
+    post: () => {
+      return `${API_URL}/creation`
     }
   },
   comments: {
