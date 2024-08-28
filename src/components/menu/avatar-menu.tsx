@@ -1,9 +1,7 @@
 "use client"
 
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import { IoLogOutOutline } from "react-icons/io5"
-import { GoSignIn } from "react-icons/go"
-import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import {
   DropdownMenu,
@@ -16,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import Avatar from "@/components/common/avatar"
 import { HomeIcon, InfoCircledIcon, Pencil1Icon } from "@radix-ui/react-icons"
+import CreationCreateDialog from "../new-creation/creation-dialog"
 
 const AvatarMenu = () => {
   const { data, status } = useSession()
@@ -39,10 +38,9 @@ const AvatarMenu = () => {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href={"/home/new"}>
-              <Pencil1Icon className="mr-2 h-4 w-4" />
-              <span>Create new creation</span>
-            </Link>
+            <>
+              <CreationCreateDialog />
+            </>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href={"/"}>
