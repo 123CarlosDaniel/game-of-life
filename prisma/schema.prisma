@@ -8,22 +8,22 @@ datasource db {
 }
 
 model account {
-  id                       String   @id @default(cuid())
+  id                       String    @id @default(cuid())
   userId                   String
   type                     String
   provider                 String
   providerAccountId        String
-  refresh_token            String?  @db.Text
-  access_token             String?  @db.Text
+  refresh_token            String?   @db.Text
+  access_token             String?   @db.Text
   expires_at               Int?
   token_type               String?
   scope                    String?
-  id_token                 String?  @db.Text
+  id_token                 String?   @db.Text
   session_state            String?
   refresh_token_expires_in Int?
-  createdAt                DateTime @default(now())
-  updatedAt                DateTime? @updatedAt @default(now())
-  user                     user?     @relation(fields: [userId], references: [id], map: "Account_userId_fkey")
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime? @default(now()) @updatedAt
+  user                     user      @relation(fields: [userId], references: [id], map: "Account_userId_fkey")
 
   @@unique([provider, providerAccountId], map: "Account_provider_providerAccountId_key")
   @@index([userId], map: "Account_userId_idx")
@@ -35,7 +35,7 @@ model comment {
   ownerId    String
   creationId String
   createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
   creation   creation @relation(fields: [creationId], references: [id], map: "Comment_creationId_fkey")
   user       user     @relation(fields: [ownerId], references: [id], map: "Comment_ownerId_fkey")
 
@@ -48,9 +48,9 @@ model creation {
   ownerId     String
   title       String
   description String?   @db.Text
-  data        Json
+  data        Json?
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
   comments    comment[]
   user        user      @relation(fields: [ownerId], references: [id], map: "Creation_ownerId_fkey")
 
@@ -62,7 +62,7 @@ model reaction {
   ownerId    String
   creationId String
   createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
   user       user     @relation(fields: [ownerId], references: [id], map: "Reaction_ownerId_fkey")
 
   @@index([ownerId], map: "Reaction_ownerId_fkey")
@@ -77,9 +77,9 @@ model user {
   emailVerified DateTime?
   image         String?
   createdAt     DateTime   @default(now())
-  updatedAt     DateTime?  @updatedAt @default(now())
-  accounts       account[]
-  comments       comment[]
-  creations      creation[]
-  reactions      reaction[]
+  updatedAt     DateTime?  @default(now()) @updatedAt
+  accounts      account[]
+  comments      comment[]
+  creations     creation[]
+  reactions     reaction[]
 }
