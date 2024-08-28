@@ -46,12 +46,14 @@ const CommentDialogForm = ({ creationId }: { creationId: string }) => {
         toast({
           title: `An error has occurred - ${response.status}`,
           description: response.message,
+          variant: "destructive",
         })
         return
       } 
       toast({
         title: "Added successfully",
         description: "Your comment has been added.",
+        variant: "success",
       })
       form.reset()
       await new Promise((res) => {

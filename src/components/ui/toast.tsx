@@ -31,10 +31,12 @@ const toastVariants = cva(
       variant: {
         default: "border bg-background text-foreground",
         destructive:
-          "destructive group border-destructive bg-destructive text-destructive-foreground",
-        success: "border-green-500 bg-green-100 text-green-800", // Success (Verde)
-        purple: "border-purple-500 bg-purple-100 text-purple-800", // Purple (Púrpura)
-        info: "border-blue-500 bg-blue-100 text-blue-800", // Info (Azul)
+          "border-red-600 bg-dark/60 bg-opacity-80 backdrop-blur-md text-white shadow-lg ring-1 ring-red-600/40",
+        success:
+          "border-green-600 bg-dark/60 bg-opacity-80 backdrop-blur-md text-white shadow-lg ring-1 ring-green-600/40", // Success (Verde con efecto glass)
+        purple:
+          "border-purple-600 bg-dark/60 bg-opacity-80 backdrop-blur-md text-white shadow-lg ring-1 ring-purple-600/40",
+        info: "border-blue-600 bg-dark/60 bg-opacity-80 backdrop-blur-md text-white shadow-lg ring-1 ring-blue-600/40", // Info (Azul)
       },
     },
     defaultVariants: {

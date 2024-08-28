@@ -14,7 +14,7 @@ import CommentAddDialog from "@/components/comment/comment-add-dialog"
 import { debounce } from "@/lib/utils"
 import { addReaction, deleteReaction } from "@/services/reactions"
 import { useSession } from "next-auth/react"
-import { toast } from "../ui/use-toast"
+import { toast } from "@/components/ui/use-toast"
 
 const CardButtons = ({
   creation,
@@ -46,6 +46,7 @@ const CardButtons = ({
           title: `Status - ${response.status === 200 ? "Success" : "Error"}`,
           description: `${response.message}`,
           duration: 2000,
+          variant: response.status === 200 ? "success" : "default",
         })
       },
       500

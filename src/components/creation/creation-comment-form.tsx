@@ -52,6 +52,7 @@ export function CreationAddCommentForm({
           title: `An error has occurred - ${response.status}`,
           description: response.message,
           duration: 2000,
+          variant: "destructive",
         })
         return
       } 
@@ -59,6 +60,7 @@ export function CreationAddCommentForm({
         title: "Added successfully",
         description: "Your comment has been added.",
         duration: 2000,
+        variant: "success",
       })
       form.reset({
         opinion: "",
