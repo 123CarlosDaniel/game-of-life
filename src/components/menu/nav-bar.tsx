@@ -15,7 +15,7 @@ const Navbar = () => {
   return (
     <div className="w-full px-8 pt-2 pb-6 flex justify-between sticky items-center z-[20] top-0 bg-dark/60 bg-opacity-30 backdrop-blur-md">
       <h1 className={cn("text-2xl font-bold", font.className)}>
-        <Link href={"/"}>Game of Life</Link>
+        <Link href={"/"} className="gradient-text">Game of Life</Link>
       </h1>
       {data?.user && <AvatarMenu />}
       {!data?.user && status !== "loading" && (

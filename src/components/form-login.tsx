@@ -13,7 +13,7 @@ const LoginForm = () => {
       <h3 className="text-center text-sm leading-8">
         Connect to the <br />
         <span
-          className={cn("text-4xl font-bold text-teal-300", font.className)}
+          className={cn("text-4xl font-bold gradient-text", font.className)}
         >
           Game of Life
         </span>

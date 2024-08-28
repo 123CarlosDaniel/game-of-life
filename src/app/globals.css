@@ -82,3 +82,10 @@
   -webkit-box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.6);
   background-color: rgba(255, 255, 255, 0.6); 
 }
+
+.gradient-text {
+  background: linear-gradient(90deg, #FF5733, #33FF57, #3357FF, #FF33A8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
