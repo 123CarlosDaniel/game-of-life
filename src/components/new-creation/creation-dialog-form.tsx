@@ -5,6 +5,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -76,6 +77,7 @@ const CreationDialogForm = () => {
           name="title"
           render={({ field }) => (
             <FormItem>
+              <FormLabel>Title</FormLabel>
              <FormControl>
                 <Input
                   placeholder=""
@@ -91,6 +93,7 @@ const CreationDialogForm = () => {
           name="description"
           render={({ field }) => (
             <FormItem>
+              <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder=""
