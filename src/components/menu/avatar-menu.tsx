@@ -23,7 +23,7 @@ const AvatarMenu = () => {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar
-          src={data?.user.image || "/profile.jpg"}
+          src={data?.user.image || "/no-profile.webp"}
           altSrc={data?.user.name || "image profile"}
         />
       </DropdownMenuTrigger>

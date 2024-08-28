@@ -24,7 +24,7 @@ const CreationPage = async ({ params }: { params: { id: string } }) => {
         <div className="w-full flex gap-x-2 py-4">
           <Avatar
             altSrc={session?.user.name || "image profile"}
-            src={session?.user.image || "/profile.jpg"}
+            src={session?.user.image || "/no-profile.webp"}
             className="mt-8"
           />
           <CreationAddCommentForm
