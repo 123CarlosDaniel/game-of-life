@@ -97,7 +97,7 @@ const GameOfLifeLogic = () => {
     if (running) {
       intervalRef.current = setInterval(() => {
         nextState()
-      }, 100)
+      }, 200)
     }
     return () => {
       clearInterval(intervalRef.current)
