@@ -1,11 +1,11 @@
 import { GetCreationsList } from "@/services/creations"
 import CreationCard from "@/components/creation/creation-card"
-import getSession from "@/lib/getSession"
 import Link from "next/link"
 import { ArrowLeftIcon } from "@radix-ui/react-icons"
+import { auth } from "@/auth"
 
 const CreationsPage = async () => {
-  const session = await getSession()
+  const session = await auth()
   const { data, pages } = await GetCreationsList(session?.jwt)
   return (
     <>
