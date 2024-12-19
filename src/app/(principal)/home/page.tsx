@@ -9,7 +9,7 @@ const CreationsPage = async () => {
   const { data, pages } = await GetCreationsList(session?.jwt)
   return (
     <>
-      {data.length === 0 ? (
+      {data && data.length === 0 ? (
         <div className="p-4 space-y-4">
           <div className="flex gap-x-8  items-center sticky z-30 top-0">
             <Link href="/">
